@@ -5,12 +5,11 @@ This module enables runs R data.table style expressions on Python DataFrames.
 Why?
 Perhaps you love succinct R data.table syntax and fail to navigate syntax of
 Pandas DataFrame in which obviously simple can get
-[complicated](https://stackoverflow.com/questions/23377108/pandas-percentage-of-total-with-groupby)
-(answers miss the best solution, which in itself tells about Pandas syntax).
+[complicated](https://stackoverflow.com/questions/23377108/pandas-percentage-of-total-with-groupby).
 
 This module defines a function `rdt` with two arguments:
 
-  * Pandas DataFrame which can be converted to R data.frame.
+  * Pandas DataFrame
   * Any string expression `<EXPR>` that you can give to R data.table `dt`
     like `dt[ <EXPR> ] `.
 
@@ -29,7 +28,7 @@ Self-contained example:
     result1 = rdt(df, 'y>"a", sum(x)')
     result2 = rdt(df, ', .(xs=sum(x)), by="y"')
 
-How to define new R function to use in expressions:
+Define new R function to use in expressions:
 
     import rpy2
     rpy2.robjects.r("fun <- function(x) {median(x)}")
@@ -37,10 +36,13 @@ How to define new R function to use in expressions:
 
 ## Installation
 
+  * [Install R](https://cran.r-project.org/mirrors.html)
+  * Install R packages: `R --no-save < requirements.r`.
+  * Install Python packages: `pip install -r requirements.txt`.
+
 ## Reason not to use this module
 
   * `rdtpy` depends on `rpy2` which depends on `R`.
     Both need to be installed and maintained.
-  * `rdt` conversion of Pandas DataFrame to R data.table is not super 
-    efficient, so with humongous data sets you may face issues.
+  * `rdt` conversion of Pandas DataFrame to R data.table is not super efficient.
 
