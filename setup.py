@@ -73,7 +73,6 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['rpy2', 'pandas'],
 
-    test_suite = 'tests'
+    test_suite='tests'
 
 )
-

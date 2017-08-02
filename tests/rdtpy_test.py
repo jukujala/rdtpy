@@ -5,10 +5,11 @@ from rdtpy import rdt
 """ Unit tests for the rdt function
 """
 
+
 class TestRDT(unittest.TestCase):
 
     def setUp(self):
-        self.df = pd.DataFrame({"x": [1,2,3], "y": ["a", "b", "c"]})
+        self.df = pd.DataFrame({"x": [1, 2, 3], "y": ["a", "b", "c"]})
 
     def test_scalar(self):
         result = rdt(self.df, ', sum(x) ')
@@ -35,6 +36,6 @@ class TestRDT(unittest.TestCase):
         with self.assertRaises(TypeError):
             rdt(5, ", sum(x)")
 
+
 if __name__ == '__main__':
     unittest.main()
-

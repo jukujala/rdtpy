@@ -18,6 +18,7 @@ Issues:
 # need to do this:
 pandas2ri.activate()
 
+
 def get_rdt_r_function():
     """ get R function to run a R data.table expression on R data.frame
     Returns:
@@ -60,6 +61,7 @@ def get_rdt_r_function():
     """
     return rpy2.robjects.r(rdt_code)
 
+
 def get_df_to_r_dt_function():
     """ internal utility for debugging: function to return rpy2 data.table
     """
@@ -72,6 +74,7 @@ def get_df_to_r_dt_function():
         }
     """
     return rpy2.robjects.r(code)
+
 
 def rdt(df, expr):
     """ execute R style expression on pandas DataFrame
@@ -103,7 +106,6 @@ def rdt(df, expr):
     # convert back to Python structure
     result = pandas2ri.ri2py(r_result)
     # convert array of length 1 to scalar to conform to R semantics
-    if len(result) == 1 and not ( type(result) is pd.core.frame.DataFrame ):
+    if len(result) == 1 and not (type(result) is pd.core.frame.DataFrame):
         result = result[0]
     return result
-
