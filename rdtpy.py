@@ -92,8 +92,10 @@ def rdt(df, expr):
         Note that in contrast to R data.table operations, rdt operations are not in-place
     """
     # check input types
-    assert type(df) is pd.core.frame.DataFrame, "df should be pandas DataFrame"
-    assert type(expr) is str, "expr should be string expression"
+    if not type(df) is pd.core.frame.DataFrame:
+        raise TypeError("df should be pandas DataFrame")
+    if not type(expr) is str:
+        raise TypeError("expr should be string expression")
     # get R function to run expr on df
     rdt_r_function = get_rdt_r_function()
     r_df = pandas2ri.py2ri(df)
