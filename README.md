@@ -38,7 +38,7 @@ Define new R function to use in expressions:
 
   * [Install R](https://cran.r-project.org/mirrors.html)
   * Install R packages: `R --no-save < requirements.r`.
-  * Install Python packages: `pip install -r requirements.txt`.
+  * `python setup.py install`.
 
 ## Reason not to use this module
 

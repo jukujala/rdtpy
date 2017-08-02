@@ -45,7 +45,7 @@ Installation
 
 -  `Install R <https://cran.r-project.org/mirrors.html>`__
 -  Install R packages: ``R --no-save < requirements.r``.
--  Install Python packages: ``pip install -r requirements.txt``.
+-  ``python setup.py install``.
 
 Reason not to use this module
 -----------------------------
