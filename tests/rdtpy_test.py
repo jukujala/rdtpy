@@ -36,6 +36,12 @@ class TestRDT(unittest.TestCase):
         with self.assertRaises(TypeError):
             rdt(5, ", sum(x)")
 
+    def test_expression_chaining(self):
+        result = rdt(self.df,
+            ', .(xs=sum(x)), by="y"',
+            ', mean(xs)'
+        )
+        self.assertEqual(result, 2.0)
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,6 @@
 import pandas as pd
 import rpy2
+import logging
 from rpy2.robjects import r, pandas2ri
 
 """ run R data.table expression on Pandas DataFrame
@@ -76,12 +77,12 @@ def get_df_to_r_dt_function():
     return rpy2.robjects.r(code)
 
 
-def rdt(df, expr):
+def rdt(df, *expr):
     """ execute R style expression on pandas DataFrame
 
     Args:
         df: pandas DataFrame
-        expr: string expression such as 
+        *expr: each is a string expression such as 
         'region=="Europe", sales_fraction := sales / sum(sales), by="country"'
         which conforms to R data.table syntax data.table[WHERE, EXPR, GROUPBY]
 
@@ -97,14 +98,16 @@ def rdt(df, expr):
     # check input types
     if not type(df) is pd.core.frame.DataFrame:
         raise TypeError("df should be pandas DataFrame")
-    if not type(expr) is str:
+    if not all([type(expr_single) is str for expr_single in expr]):
         raise TypeError("expr should be string expression")
     # get R function to run expr on df
     rdt_r_function = get_rdt_r_function()
     r_df = pandas2ri.py2ri(df)
-    r_result = rdt_r_function(df, expr)
+    for expr_single in expr:
+        logging.debug("run expression: " + expr_single)
+        r_df = rdt_r_function(r_df, expr_single)
     # convert back to Python structure
-    result = pandas2ri.ri2py(r_result)
+    result = pandas2ri.ri2py(r_df)
     # convert array of length 1 to scalar to conform to R semantics
     if len(result) == 1 and not (type(result) is pd.core.frame.DataFrame):
         result = result[0]

@@ -20,13 +20,26 @@ Calculate percentage of total sales by country grouped by region:
 
     result = rdt(df, ', of_total := sales/sum(sales), by="region"')
 
-Self-contained example:
+Self-contained examples:
 
     import pandas as pd
     from rdtpy import rdt
     df = pd.DataFrame({"x": [1,2,3], "y": ["a", "b", "c"]})
-    result1 = rdt(df, 'y>"a", sum(x)')
-    result2 = rdt(df, ', .(xs=sum(x)), by="y"')
+
+    rdt(df, 'y>"a", sum(x)')
+    # 5
+
+    rdt(df, ', .(xs=sum(x)), by="y"')
+    #     y  xs
+    #  1  a   1
+    #  2  b   2
+    #  3  c   3
+    
+    # chain expressions:
+    rdt(df,
+      ', .(xs=sum(x)), by="y"',
+      ', mean(xs)')
+    # 2.0
 
 Define new R function to use in expressions:
 
