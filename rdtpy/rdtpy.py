@@ -76,6 +76,25 @@ def get_df_to_r_dt_function():
     """
     return rpy2.robjects.r(code)
 
+def validate_input_columns(df):
+    """ if column dtype is object then allow only strings inside
+    otherwise conversion to R data.frame will go wrong
+
+    Args:
+        df: Pandas DataFrame
+
+    Returns:
+        True. asserts that input column types are fine for the conversion
+    """
+    col_types = df.dtypes 
+    object_cols = col_types[col_types == "object"].index
+    for col in object_cols:
+        col_types = df[col].apply(type).value_counts()
+        err_msg_types = "column %s has multiple types" %col
+        assert len(col_types) == 1, err_msg_types
+        err_msg_str = "object column %s type must be str" %col
+        assert col_types.index[0] == str, err_msg_str
+    return True
 
 def rdt(df, *expr):
     """ execute R style expression on pandas DataFrame
@@ -100,6 +119,7 @@ def rdt(df, *expr):
         raise TypeError("df should be pandas DataFrame")
     if not all([type(expr_single) is str for expr_single in expr]):
         raise TypeError("expr should be string expression")
+    validate_input_columns(df)
     # get R function to run expr on df
     rdt_r_function = get_rdt_r_function()
     r_df = pandas2ri.py2ri(df)
